@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8">
+  <title>Pembelian Barang Game</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 500px; margin: auto; padding: 30px; background-color: #f4f4f4; }
+    h2 { text-align: center; color: #333; }
+    label { display: block; margin-top: 15px; color: #333; }
+    input, select { width: 100%; padding: 8px; margin-top: 5px; border: 1px solid #ccc; border-radius: 4px; }
+    #total { margin-top: 15px; font-weight: bold; color: #1e7e34; }
+    button { background-color: #28a745; color: white; border: none; padding: 12px; margin-top: 20px; width: 100%; border-radius: 4px; cursor: pointer; }
+    button:hover { background-color: #218838; }
+  </style>
+</head>
+<body>
+  <h2>Tempah Barang Game</h2>
+  <label for="username">Nama Pengguna</label>
+  <input type="text" id="username" placeholder="Contoh: xXGamerXx" required>
+  <label for="item">Nama Barang</label>
+  <select id="item" onchange="updatePrice()">
+    <option value="Macaw" data-price="2">Macaw - RM2</option>
+    <option value="Scarlet" data-price="2">Scarlet - RM2</option>
+    <option value="Racoon" data-price="10">Racoon - RM10</option>
+    <option value="Dragonfly" data-price="8">Dragonfly - RM8</option>
+  </select>
+  <label for="quantity">Jumlah Barang</label>
+  <input type="number" id="quantity" value="1" min="1" onchange="updatePrice()">
+  <p id="total">Jumlah Harga: RM2</p>
+  <button onclick="sendToWhatsApp()">Hantar ke WhatsApp</button>
+  <script>
+    function updatePrice() {
+      const item = document.getElementById("item");
+      const price = parseFloat(item.options[item.selectedIndex].getAttribute("data-price"));
+      const quantity = parseInt(document.getElementById("quantity").value);
+      document.getElementById("total").innerText = `Jumlah Harga: RM${price * quantity}`;
+    }
+    function sendToWhatsApp() {
+      const username = document.getElementById("username").value.trim();
+      const item = document.getElementById("item").value;
+      const price = parseFloat(document.getElementById("item").selectedOptions[0].getAttribute("data-price"));
+      const quantity = parseInt(document.getElementById("quantity").value);
+      const total = price * quantity;
+      if (!username || quantity < 1) { alert("Sila isi semua maklumat dengan betul."); return; }
+      const msg = `Tempahan Baru:%0A🔸 Nama Pengguna: ${username}%0A🔸 Barang: ${item}%0A🔸 Kuantiti: ${quantity}%0A💰 Jumlah: RM${total}`;
+      window.open(`https://wa.me/60133514904?text=${msg}`, '_blank');
+    }
+    window.onload = updatePrice;
+  </script>
+</body>
+</html>
